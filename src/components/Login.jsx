@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import './Login.css';
+import { Link } from "react-router-dom";
+
 
 const Login = ({ setUserDetails }) => {
   const navigate = useNavigate();
@@ -19,24 +21,27 @@ const Login = ({ setUserDetails }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Authenticate user
+      console.log("Sending login request:", formData);
       const response = await axios.post("http://localhost:8080/api/login", formData);
-
-      // Fetch user details using the email
+  
+      if (response.data === "Incorrect password") {
+        setResponseMessage("Invalid email or password.");
+        return;
+      }
+  
+      console.log("Login success, fetching user details...");
       const userDetailsResponse = await axios.get(`http://localhost:8080/api/email/${formData.email}`);
       const userDetails = userDetailsResponse.data;
-
-      // Store user details in local storage
+  
       localStorage.setItem("userDetails", JSON.stringify(userDetails));
-
-      // Update parent state with user details
       setUserDetails(userDetails);
       navigate("/dashboard");
     } catch (error) {
-      console.error("There was an error with the login request!", error);
+      console.error("Login error:", error);
       setResponseMessage("Login failed. Please check your credentials and try again.");
     }
   };
+  
 
   return (
     <div className="login-container">
@@ -59,6 +64,11 @@ const Login = ({ setUserDetails }) => {
         <button type="submit">Login</button>
       </form>
       {responseMessage && <p>{responseMessage}</p>}
+      <p>Don't have account ?, {" "}
+      <Link to="/signup" className="login-link">
+            Signup
+          </Link>
+          </p>
     </div>
   );
 };

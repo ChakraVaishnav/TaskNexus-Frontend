@@ -17,6 +17,7 @@ body {
   
   .login-container h2 {
     margin-bottom: 20px;
+    text-decoration: underline;
   }
   
   .login-container label {

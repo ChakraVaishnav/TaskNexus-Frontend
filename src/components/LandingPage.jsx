@@ -23,6 +23,7 @@ const LandingPage = ({setUserDetails}) => {
   return (
     <div className="container">
       {/* TaskNexus Title */}
+      
       <h1 className="title">TaskNexus</h1>
 
       {/* Subtitle */}
@@ -35,7 +36,8 @@ const LandingPage = ({setUserDetails}) => {
         <button className="btn create-btn" onClick={handleCreateAccount}>
           Create Account
         </button>
-        <p className="login-text">
+        
+          <p className="login-text">
           Already have an account?{" "}
           <Link to="/login" className="login-link">
             Login

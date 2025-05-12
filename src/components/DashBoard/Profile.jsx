@@ -90,7 +90,7 @@ const updateUser = async () => {
       ) : (
         <div className="profile-card">
           <div className="profile-header">
-            <h4>Username:</h4>
+            <h2>Username:</h2>
             <h2>{userDetails.username}</h2>
           </div>
           <h4>Bio:</h4>

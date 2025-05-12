@@ -31,17 +31,29 @@ const UserDetails = ({ setUserDetails }) => {
   };
 
   const sendOtp = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/send-otp/${formData.email}`
-      );
-      alert(response.data);
-      setOtpSent(true);
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      alert("Failed to send OTP. Please try again.");
+  try {
+    // Check if email already exists
+    const checkResponse = await axios.get(
+      `http://localhost:8080/api/check-email/${formData.email}`
+    );
+
+    if (checkResponse.data.exists) {
+      alert("Email already registered. Please log in.");
+      return; // Stop further execution
     }
-  };
+
+    // Send OTP if email does not exist
+    const response = await axios.post(
+      `http://localhost:8080/api/send-otp/${formData.email}`
+    );
+    alert(response.data);
+    setOtpSent(true);
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    alert("Failed to send OTP. Please try again.");
+  }
+};
+
 
   const verifyOtp = async () => {
     try {
@@ -100,8 +112,9 @@ const UserDetails = ({ setUserDetails }) => {
           <h2>Verification</h2>
           <form>
             <div className="user-details-group">
-              <label>Email</label>
+              <label>Email:</label>
               <input
+                placeholder="Enter your email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -113,8 +126,9 @@ const UserDetails = ({ setUserDetails }) => {
 
             {otpSent && (
               <div className="user-details-group">
-                <label>Enter OTP</label>
+                <label>Enter OTP:</label>
                 <input
+                placeholder="Enter OTP"
                   type="text"
                   name="otp"
                   value={formData.otp}

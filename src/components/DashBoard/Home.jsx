@@ -143,8 +143,8 @@ const Home = ({ userDetails }) => {
           <p>There are "{taskStats.ongoing}" ongoing tasks</p>
         </div>
         <div className="stat-card">
-          <h3>Completed Tasks</h3>
-          <p>You have completed "{completedTasks}" tasks</p>
+          <h3>Planned Tasks</h3>
+          <p>You have completed "{taskStats.planned}" tasks</p>
         </div>
         <div className="stat-card">
           <h3>Overdue Tasks</h3>
@@ -154,12 +154,11 @@ const Home = ({ userDetails }) => {
 
       {/* Planned Tasks Section */}
       <div className="planned-tasks">
-        <h3>Planned Tasks</h3>
-        {taskStats.planned > 0 ? (
-          <p>You have "{taskStats.planned}" planned tasks. Go check them out on the tasks section !</p>
-        ) : (
-          <p>No planned tasks, Schedule your future tasks !</p>
-        )}
+        <h3>Completed Tasks</h3>
+        {(
+          <p>You have completed "{completedTasks}" tasks</p>
+        ) 
+      }
       </div>
 
       {/* Action Shortcuts */}
