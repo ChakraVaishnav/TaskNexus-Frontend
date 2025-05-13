@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DashboardSideBar from './DashboardSidebar';
+import DashboardSideBar from './DashboardSideBar.jsx';
 import DashboardMain from './DashboardMain';
 
 const Dashboard = ({ userDetails, setUserDetails }) => {

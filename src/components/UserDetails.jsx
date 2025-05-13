@@ -14,6 +14,7 @@ const UserDetails = ({ setUserDetails }) => {
     bio: "",
   });
 
+  const [profilePic, setProfilePic] = useState(null);
   const [errors, setErrors] = useState({});
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
@@ -24,36 +25,36 @@ const UserDetails = ({ setUserDetails }) => {
   }, [otpVerified]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
 
-    // Clear error when user starts typing
-    setErrors({ ...errors, [e.target.name]: "" });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePic(file);
   };
 
   const sendOtp = async () => {
-  try {
-    // Check if email already exists
-    const checkResponse = await axios.get(
-      `http://localhost:8080/api/check-email/${formData.email}`
-    );
+    try {
+      const checkResponse = await axios.get(
+        `http://localhost:8080/api/check-email/${formData.email}`
+      );
+      if (checkResponse.data.exists) {
+        alert("Email already registered. Please log in.");
+        return;
+      }
 
-    if (checkResponse.data.exists) {
-      alert("Email already registered. Please log in.");
-      return; // Stop further execution
+      const response = await axios.post(
+        `http://localhost:8080/api/send-otp/${formData.email}`
+      );
+      alert(response.data);
+      setOtpSent(true);
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      alert("Failed to send OTP. Please try again.");
     }
-
-    // Send OTP if email does not exist
-    const response = await axios.post(
-      `http://localhost:8080/api/send-otp/${formData.email}`
-    );
-    alert(response.data);
-    setOtpSent(true);
-  } catch (error) {
-    console.error("Error sending OTP:", error);
-    alert("Failed to send OTP. Please try again.");
-  }
-};
-
+  };
 
   const verifyOtp = async () => {
     try {
@@ -61,7 +62,6 @@ const UserDetails = ({ setUserDetails }) => {
         `http://localhost:8080/api/verify-otp/${formData.email}/${formData.otp}`
       );
       alert(response.data);
-
       if (response.data === "OTP verified successfully") {
         setOtpVerified(true);
       }
@@ -72,32 +72,35 @@ const UserDetails = ({ setUserDetails }) => {
   };
 
   const validateForm = () => {
-    let newErrors = {};
+    const newErrors = {};
     if (!formData.email.trim()) newErrors.email = "Email is required";
     if (!formData.otp.trim()) newErrors.otp = "OTP is required";
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.password.trim()) newErrors.password = "Password is required";
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateForm()) return;
 
     try {
-      const response = await axios.post("http://localhost:8080/api/save", formData);
+      const payload = new FormData();
+      payload.append("user", new Blob([JSON.stringify(formData)], { type: "application/json" }));
+      if (profilePic) {
+        payload.append("profilePic", profilePic);
+      }
+
+      const response = await axios.post("http://localhost:8080/api/save", payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       alert("Profile saved successfully!");
-
-      // Save to local storage
       localStorage.setItem("userDetails", JSON.stringify(response.data));
-
-      // Update state
       setUserDetails(response.data);
-
-      // Redirect to dashboard
       navigate("/dashboard");
     } catch (error) {
       console.error("Error saving user:", error);
@@ -108,7 +111,7 @@ const UserDetails = ({ setUserDetails }) => {
   return (
     <div className="user-details-container">
       {!otpVerified ? (
-        <div className="user-details-box">
+        <div className="verification-box">
           <h2>Verification</h2>
           <form>
             <div className="user-details-group">
@@ -128,7 +131,7 @@ const UserDetails = ({ setUserDetails }) => {
               <div className="user-details-group">
                 <label>Enter OTP:</label>
                 <input
-                placeholder="Enter OTP"
+                  placeholder="Enter OTP"
                   type="text"
                   name="otp"
                   value={formData.otp}
@@ -173,6 +176,26 @@ const UserDetails = ({ setUserDetails }) => {
         <div className="user-details-box">
           <h2>Complete Your Profile</h2>
           <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="profile-pic">Choose Profile Picture</label>
+              <input
+                type="file"
+                id="profile-pic"
+                name="profile-pic"
+                accept="image/*"
+                onChange={handleFileChange}
+              />
+              {profilePic && (
+                <div className="image-preview">
+                  <img
+                    src={URL.createObjectURL(profilePic)}
+                    alt="Profile Preview"
+                    className="preview-image"
+                  />
+                </div>
+              )}
+            </div>
+
             <div className="input-group">
               <label>Username</label>
               <input
@@ -227,7 +250,9 @@ const UserDetails = ({ setUserDetails }) => {
               ></textarea>
             </div>
 
-            <button className="save" type="submit">Save</button>
+            <button className="save" type="submit">
+              Save
+            </button>
           </form>
         </div>
       )}

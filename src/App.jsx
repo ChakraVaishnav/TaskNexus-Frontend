@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login"; 
 import UserDetails from "./components/UserDetails";
 import Dashboard from "./components/Dashboard";
+import ForgotPassword from "./components/ForgotPassword";
 
 const App = () => {
   const [userDetails, setUserDetails] = useState(null); // User details state
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/" element={<LandingPage setUserDetails={setUserDetails} />} />
         <Route path="/signup" element={<Signup setUserDetails={setUserDetails} />} />
         <Route path="/login" element={<Login setUserDetails={setUserDetails} />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route
           path="/user-details"
           element={<UserDetails setUserDetails={setUserDetails} />}

@@ -9,13 +9,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
 
-.profile-container .heading{
-  margin-left:-10px;
+.profile-container .heading {
+  margin-left: -10px;
   text-decoration: underline;
 }
+
 /* Profile Card */
 .profile-card {
-  background-color: #1a1a1a; /* Dark grey card */
+  background-color: #1a1a1a;
   padding: 20px;
   border-radius: 10px;
   border: 1px solid #333;
@@ -26,22 +27,39 @@
 .profile-header {
   display: flex;
   align-items: center;
-  border-bottom: 2px solid #333;
   padding-bottom: 10px;
   margin-bottom: 10px;
+  flex-direction: column;
+  text-align: center;
+  
+}
+
+.ProfilePic {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.profile-photo {
+  margin-left: 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 h2 {
   margin-left: 20px;
 }
 
-/* Heading & Paragraph Styles */
+/* Headings & Text */
 h4 {
   color: #5eb3f5;
 }
 
 p {
-  color: #ccc; /* Light grey text */
+  color: #ccc;
 }
 
 /* Bio Section */
@@ -61,9 +79,9 @@ p {
 /* Edit Button */
 .editButton {
   margin-top: 5px;
-  background-color:#e63946;
+  background-color: #e63946;
 }
-.editButton:hover{
+.editButton:hover {
   background-color: #c53b47;
 }
 
@@ -102,14 +120,19 @@ button {
 
 /* Save Button */
 .saveButton {
-  background-color: #5eb3f5; /* Light blue button */
+  background-color: #5eb3f5;
   color: #000;
 }
 
 /* Cancel Button */
 .cancelButton {
-  background-color: #e63946; /* Red button */
+  background-color: #e63946;
   color: #fff;
+}
+
+.edit .actions {
+  display: flex;
+  flex-direction: row;
 }
 
 /* Profile Actions */
@@ -117,12 +140,21 @@ button {
   margin-top: 20px;
 }
 
+/* Profile Photo Preview */
+.profile-photo-preview {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-top: 10px;
+}
+
 /* Media Query for Responsiveness */
 @media (max-width: 768px) {
   .profile-container {
-    margin-top: 100px;
     width: 90%;
     padding: 15px;
+    margin-top: 100px;
   }
 
   .profile-card,
@@ -130,8 +162,47 @@ button {
     padding: 15px;
   }
 
+  .profile-header {
+    flex-direction: column;
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .ProfilePic {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-photo {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+  }
+
   button {
     width: 100%;
     margin-bottom: 10px;
+  }
+
+  .edit .actions {
+    flex-direction: column;
+  }
+
+  .profile-photo-preview {
+    width: 120px;
+    height: 120px;
+  }
+}
+/* Move only profile picture and username slightly to the left on desktop */
+@media (min-width: 769px) {
+  .profile-header {
+    margin-left: 0px; /* Or use transform: translateX(-20px); for fine-tuning */
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .ProfilePic {
+    justify-content: flex-start;
   }
 }

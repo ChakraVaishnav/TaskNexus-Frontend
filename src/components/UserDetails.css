@@ -1,137 +1,127 @@
-/* User Details Section */
+/* Main Container */
 .user-details-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
+  align-items: flex-start;
+  gap: 20px; /* reduced from 40px */
+  padding: 10px; /* reduced from 20px */
   background-color: #0d1117;
-  color: white;
   font-family: 'Arial', sans-serif;
+  color: white;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
-
-/* Form Box */
-.user-details-box {
+.verification-box{
+margin-top: 200px;
+}
+/* Common Box Styling */
+.user-details-box,
+.verification-box {
+  
   background-color: #161b22;
-  padding: 30px;
+  padding: 20px; /* reduced from 30px */
   border-radius: 10px;
-  width: 400px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  width: 400px; /* reduced slightly */
+  max-width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
 }
 
-/* Form Heading */
-.user-details-box h2 {
+/* Input Groups */
+.input-group,
+.user-details-group {
+  margin-bottom: 14px; /* reduced from 18px */
+}
+
+/* Image Preview */
+.image-preview {
+  margin-top: 10px;
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 22px;
-  color: #58a6ff;
 }
 
-/* Form Input Groups */
-.user-details-container .input-group, 
-.user-details-container .user-details-group {
+.image-preview img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 5px;
+  border: 1px solid #30363d;
+  object-fit: cover;
+}
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .user-details-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .user-details-box,
+  .verification-box {
+    width: 95%;
+  }
+
+  .user-details-btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  .image-preview img {
+    max-width: 80px;
+    max-height: 80px;
+  }
+}
+
+.image-preview {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.preview-image {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 5px;
+  border: 2px solid #30363d;
+  object-fit: cover;
+}
+
+.input-group {
   margin-bottom: 15px;
 }
 
-.user-details-container label {
+.input-group label {
   display: block;
-  font-weight: bold;
-  color: #c9d1d9;
   margin-bottom: 5px;
 }
 
-.user-details-container input, 
-.user-details-container select, 
-.user-details-container textarea {
+.input-group input,
+.input-group select,
+.input-group textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #30363d;
-  background: #0d1117;
-  color: white;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
-  outline: none;
-  transition: 0.3s;
 }
 
-.user-details-container input:focus, 
-.user-details-container select:focus, 
-.user-details-container textarea:focus {
-  border-color: #58a6ff;
-}
-
-/* Error Message */
-.user-details-container .error {
+.error {
   color: red;
   font-size: 12px;
-  margin-top: 5px;
 }
 
-/* Buttons */
-.user-details-container .user-details-button-group, 
-.user-details-container .input-group {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.user-details-container .user-details-btn {
-  flex: 1;
+.save {
+  background-color: #4caf50;
+  color: white;
   padding: 10px;
-  margin: 5px;
   border: none;
   border-radius: 5px;
-  font-size: 14px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-.user-details-container .user-details-send-btn {
-  background-color: #21262d;
-  color: #58a6ff;
-  border: 1px solid #58a6ff;
+.save:hover {
+  background-color: #45a049;
 }
 
-.user-details-container .user-details-send-btn:hover {
-  background-color: #58a6ff;
-  color: white;
-}
-
-.user-details-container .user-details-verify-btn {
-  background-color: #238636;
-  color: white;
-}
-
-.user-details-container .user-details-verify-btn:hover {
-  background-color: #2ea043;
-}
-
-/* Blue Submit Button */
-.user-details-container .save {
-  width: 100%;
-  padding: 12px;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: bold;
-}
-
-.user-details-container .save:hover {
-  background-color: #0056b3;
-}
-
-/* Responsive Design */
-@media (max-width: 480px) {
-  .user-details-container .user-details-box {
-      width: 90%;
-  }
-
-  .user-details-container .user-details-btn {
-      flex: none;
-      width: 100%;
-  }
+.user-details-button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
 }

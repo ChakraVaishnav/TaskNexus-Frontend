@@ -25,8 +25,7 @@ const Home = ({ userDetails }) => {
     const hour = new Date().getHours();
     if (hour >= 4 && hour < 12) return "Good Morning";
     if (hour >= 12 && hour < 16) return "Good Afternoon";
-    if (hour >= 16 && hour < 19) return "Good Evening";
-    if (hour >= 19 && hour < 24) return "Good Night";
+    if (hour >= 16 && hour < 24) return "Good Evening";
     return "You are Batman";
   };
 

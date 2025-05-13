@@ -7,7 +7,7 @@ const DashboardSideBar = ({ setCurrentSection, userDetails, setUserDetails }) =>
   const [sidebarOpen, setSidebarOpen] = useState(false); // Sidebar toggle state
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const navigate = useNavigate();
-
+  const [profilePic,setProfilePic]=useState(null);
   // Handle logout
   const handleLogout = () => {
     localStorage.clear();
@@ -51,7 +51,32 @@ const DashboardSideBar = ({ setCurrentSection, userDetails, setUserDetails }) =>
   
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  
+
+  useEffect(() => {
+  let imageUrl;
+
+  const fetchProfilePhoto = async () => {
+    try {
+      const email = userDetails.email;
+      if (!email) return;
+
+      const res = await fetch(`http://localhost:8080/api/profile-pic/${email}`);
+      if (!res.ok) throw new Error("Failed to fetch profile photo");
+
+      const blob = await res.blob();
+      imageUrl = URL.createObjectURL(blob);
+      setProfilePic(imageUrl);
+    } catch (err) {
+      console.error("Error fetching profile photo:", err);
+    }
+  };
+
+  fetchProfilePhoto();
+
+  return () => {
+    if (imageUrl) URL.revokeObjectURL(imageUrl); // Clean up
+  };
+}, [userDetails]);
 
   return (
     <>
@@ -67,6 +92,8 @@ const DashboardSideBar = ({ setCurrentSection, userDetails, setUserDetails }) =>
         <div className="user-info">
           {userDetails ? (
             <>
+              <img className="dp" src={profilePic} alt="Profile Picture"
+              style={{ width: "100px", height: "100px", borderRadius: "50%", objectFit: "cover" }}/>
               <h4>{userDetails.username}</h4>
               <h5>{userDetails.bio}</h5>
             </>

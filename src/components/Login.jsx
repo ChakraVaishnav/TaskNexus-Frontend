@@ -64,11 +64,17 @@ const Login = ({ setUserDetails }) => {
         <button type="submit">Login</button>
       </form>
       {responseMessage && <p>{responseMessage}</p>}
-      <p>Don't have account ?, {" "}
-      <Link to="/signup" className="login-link">
-            Signup
-          </Link>
-          </p>
+      <p>
+        <Link to="/forgot-password" className="forgot-password-link">
+          Forgot Password?
+        </Link>
+      </p>
+      <p>
+        Don't have account?{" "}
+        <Link to="/signup" className="login-link">
+          Signup
+        </Link>
+      </p>
     </div>
   );
 };
